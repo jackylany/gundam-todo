@@ -37,6 +37,11 @@ function AppContent() {
     await loadWorkspaces();
   };
 
+  const handleUpdateWorkspace = async (id: number, name: string) => {
+    await workspacesApi.update(id, { name });
+    await loadWorkspaces();
+  };
+
   const handleDeleteWorkspace = async (id: number) => {
     await workspacesApi.delete(id);
     if (activeWorkspace === id) {
@@ -66,6 +71,7 @@ function AppContent() {
           activeId={activeWorkspace}
           onSelect={setActiveWorkspace}
           onCreate={handleCreateWorkspace}
+          onUpdate={handleUpdateWorkspace}
           onDelete={handleDeleteWorkspace}
         />
         <TodoList

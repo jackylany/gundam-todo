@@ -254,6 +254,26 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   EDIT INPUT
+   ═══════════════════════════════════════════════════════════════ */
+.edit-input {
+  flex: 1;
+  padding: 4px 8px;
+  border: 2px solid var(--primary);
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--hud-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
    EMPTY STATE
    ═══════════════════════════════════════════════════════════════ */
 .empty-hint {

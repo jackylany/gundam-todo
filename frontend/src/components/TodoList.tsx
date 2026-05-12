@@ -3,6 +3,8 @@ import type { Todo } from '../api/todo';
 import { todosApi } from '../api/todo';
 import './TodoList.css';
 
+type StatusFilter = 'all' | 'pending' | 'in_progress' | 'completed';
+
 interface Props {
   workspaceId: number | null;
   todos: Todo[];
@@ -14,6 +16,7 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
   const [newTitle, setNewTitle] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState('');
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +64,10 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
   const inProgressTodos = filteredTodos.filter((t) => t.status === 'in_progress');
   const completedTodos = filteredTodos.filter((t) => t.status === 'completed');
 
+  const displayTodos = statusFilter === 'all'
+    ? filteredTodos
+    : filteredTodos.filter((t) => t.status === statusFilter);
+
   const getPriorityClass = (priority: string) => {
     switch (priority) {
       case 'high': return 'priority-high';
@@ -99,7 +106,7 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
       ) : (
         <span
           className={`todo-title ${todo.status === 'completed' ? 'done' : ''}`}
-          onClick={() => {
+          onDoubleClick={() => {
             setEditingId(todo.id);
             setEditTitle(todo.title);
           }}
@@ -148,49 +155,43 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
         </form>
       )}
 
+      <div className="status-filters">
+        <button
+          className={`filter-btn ${statusFilter === 'all' ? 'active' : ''}`}
+          onClick={() => setStatusFilter('all')}
+        >
+          全部
+          <span className="filter-count">{filteredTodos.length}</span>
+        </button>
+        <button
+          className={`filter-btn pending ${statusFilter === 'pending' ? 'active' : ''}`}
+          onClick={() => setStatusFilter('pending')}
+        >
+          待办
+          <span className="filter-count">{pendingTodos.length}</span>
+        </button>
+        <button
+          className={`filter-btn in-progress ${statusFilter === 'in_progress' ? 'active' : ''}`}
+          onClick={() => setStatusFilter('in_progress')}
+        >
+          进行中
+          <span className="filter-count">{inProgressTodos.length}</span>
+        </button>
+        <button
+          className={`filter-btn completed ${statusFilter === 'completed' ? 'active' : ''}`}
+          onClick={() => setStatusFilter('completed')}
+        >
+          已完成
+          <span className="filter-count">{completedTodos.length}</span>
+        </button>
+      </div>
+
       <div className="todo-sections">
-        {inProgressTodos.length > 0 && (
-          <div className="todo-section">
-            <div className="section-header in-progress">
-              <span className="section-icon">►</span>
-              <span>IN PROGRESS</span>
-              <span className="count">{inProgressTodos.length}</span>
-            </div>
-            <div className="section-items">
-              {inProgressTodos.map(renderTodoItem)}
-            </div>
-          </div>
-        )}
-
-        {pendingTodos.length > 0 && (
-          <div className="todo-section">
-            <div className="section-header pending">
-              <span className="section-icon">○</span>
-              <span>PENDING</span>
-              <span className="count">{pendingTodos.length}</span>
-            </div>
-            <div className="section-items">
-              {pendingTodos.map(renderTodoItem)}
-            </div>
-          </div>
-        )}
-
-        {completedTodos.length > 0 && (
-          <div className="todo-section">
-            <div className="section-header completed">
-              <span className="section-icon">✓</span>
-              <span>COMPLETED</span>
-              <span className="count">{completedTodos.length}</span>
-            </div>
-            <div className="section-items">
-              {completedTodos.map(renderTodoItem)}
-            </div>
-          </div>
-        )}
-
-        {filteredTodos.length === 0 && !isCreating && (
+        {displayTodos.length > 0 ? (
+          displayTodos.map(renderTodoItem)
+        ) : (
           <div className="no-todos">
-            <p>暂无待办事项</p>
+            <p>{statusFilter === 'all' ? '暂无待办事项' : '该状态下暂无任务'}</p>
           </div>
         )}
       </div>

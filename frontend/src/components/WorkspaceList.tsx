@@ -7,12 +7,15 @@ interface Props {
   activeId: number | null;
   onSelect: (id: number) => void;
   onCreate: (name: string) => void;
+  onUpdate: (id: number, name: string) => void;
   onDelete: (id: number) => void;
 }
 
-export function WorkspaceList({ workspaces, activeId, onSelect, onCreate, onDelete }: Props) {
+export function WorkspaceList({ workspaces, activeId, onSelect, onCreate, onUpdate, onDelete }: Props) {
   const [isCreating, setIsCreating] = useState(false);
   const [newName, setNewName] = useState('');
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editName, setEditName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +24,14 @@ export function WorkspaceList({ workspaces, activeId, onSelect, onCreate, onDele
       setNewName('');
       setIsCreating(false);
     }
+  };
+
+  const handleEdit = (ws: Workspace) => {
+    if (editName.trim() && editName !== ws.name) {
+      onUpdate(ws.id, editName.trim());
+    }
+    setEditingId(null);
+    setEditName('');
   };
 
   return (
@@ -63,7 +74,34 @@ export function WorkspaceList({ workspaces, activeId, onSelect, onCreate, onDele
               className="workspace-color"
               style={{ background: ws.color || '#3B82F6' }}
             />
-            <span className="workspace-name">{ws.name}</span>
+            {editingId === ws.id ? (
+              <input
+                className="edit-input"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                onBlur={() => handleEdit(ws)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleEdit(ws);
+                  if (e.key === 'Escape') {
+                    setEditingId(null);
+                    setEditName('');
+                  }
+                }}
+                onClick={(e) => e.stopPropagation()}
+                autoFocus
+              />
+            ) : (
+              <span
+                className="workspace-name"
+                onDoubleClick={(e) => {
+                  e.stopPropagation();
+                  setEditingId(ws.id);
+                  setEditName(ws.name);
+                }}
+              >
+                {ws.name}
+              </span>
+            )}
             <button
               className="delete-btn"
               onClick={(e) => {

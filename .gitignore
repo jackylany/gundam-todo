@@ -28,3 +28,10 @@ npm-debug.log*
 # Cache
 .vite/
 *.cache
+
+# AI Tools Config (本地使用，不提交)
+.claude/
+.cursor/
+.cursorrules
+.github/copilot-instructions.md
+*.md.backup
