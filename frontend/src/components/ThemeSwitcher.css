@@ -1,0 +1,78 @@
+/* ═══════════════════════════════════════════════════════════════
+   THEME SWITCHER - UNIT SELECTOR MODULE
+   ═══════════════════════════════════════════════════════════════ */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.theme-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  position: relative;
+  padding-right: 12px;
+}
+
+.theme-label::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+}
+
+.theme-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.theme-btn {
+  padding: 8px 14px;
+  border: 2px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  position: relative;
+  transition: all 0.25s ease;
+  clip-path: polygon(10% 0, 100% 0, 100% 85%, 90% 100%, 0 100%, 0 10%);
+}
+
+.theme-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary-light);
+  background: var(--surface-hover);
+}
+
+.theme-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--secondary);
+  box-shadow: 0 0 15px var(--hud-glow);
+}
+
+/* Active indicator line */
+.theme-btn.active::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+}
+
+.theme-code {
+  display: block;
+}

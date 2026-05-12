@@ -1,0 +1,11 @@
+/* 清除 Vite 默认样式，使用 gundam.css 的主题变量 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

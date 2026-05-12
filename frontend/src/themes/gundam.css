@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+/* ═══════════════════════════════════════════════════════════════
+   RX-78-2 元祖高达 - WHITE/BLUE/RED/YELLOW - 主体白
+   ═══════════════════════════════════════════════════════════════ */
+:root, [data-theme="rx78"] {
+  --primary: #0055A4;              /* 经典高达蓝 */
+  --primary-dark: #003D7A;
+  --primary-light: #2D7DD2;
+  --secondary: #FFFFFF;            /* 机体白 */
+  --accent: #E60012;               /* V字天线红 */
+  --accent-glow: rgba(230, 0, 18, 0.3);
+  --accent-secondary: #FCC800;     /* 腰部黄 */
+  --background: #F5F7FA;           /* 白色背景 */
+  --background-gradient: linear-gradient(135deg, #FFFFFF 0%, #F0F4F8 50%, #E8ECF0 100%);
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+  --surface-hover: #E8F0F8;
+  --surface-active: #D8E4F0;
+  --text-primary: #1A2B3C;
+  --text-secondary: #4A5E70;
+  --text-muted: #8A9EB0;
+  --border: #B8C8D8;
+  --border-accent: #0055A4;
+  --border-light: rgba(0, 85, 164, 0.2);
+  --shadow: 0 4px 16px rgba(0, 85, 164, 0.15);
+  --shadow-glow: 0 0 20px rgba(0, 85, 164, 0.2);
+  --success: #10B981;
+  --warning: #FCC800;
+  --danger: #E60012;
+  --panel-corner: 12px;
+  --hud-glow: rgba(0, 85, 164, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RX-178 高达 Mk-II - DARK BLUE/RED/YELLOW - 主体深蓝
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="rx178"] {
+  --primary: #1E3A5F;              /* Mk-II深蓝 */
+  --primary-dark: #0D1F35;
+  --primary-light: #2D5A8F;
+  --secondary: #FFFFFF;            /* 白色点缀 */
+  --accent: #E60012;               /* 泰坦斯红 */
+  --accent-glow: rgba(230, 0, 18, 0.3);
+  --accent-secondary: #FCC800;     /* 黄色点缀 */
+  --background: #0A1A30;           /* 深蓝背景 */
+  --background-gradient: linear-gradient(135deg, #0A1A30 0%, #1E3A5F 50%, #0D2040 100%);
+  --surface: #152540;
+  --surface-alt: #1A3050;
+  --surface-hover: #254565;
+  --surface-active: #305580;
+  --text-primary: #E8F0F8;
+  --text-secondary: #8BA4C0;
+  --text-muted: #5A7490;
+  --border: #2D4560;
+  --border-accent: #1E3A5F;
+  --border-light: rgba(30, 58, 95, 0.4);
+  --shadow: 0 4px 16px rgba(0, 30, 60, 0.4);
+  --shadow-glow: 0 0 20px rgba(30, 58, 95, 0.3);
+  --success: #10B981;
+  --warning: #FCC800;
+  --danger: #E60012;
+  --panel-corner: 8px;
+  --hud-glow: rgba(30, 58, 95, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RX-93 ν高达 - WHITE/BLACK/YELLOW/RED - 主体白
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="rx93"] {
+  --primary: #1A1A1A;              /* 黑色主调 */
+  --primary-dark: #0D0D0D;
+  --primary-light: #333333;
+  --secondary: #FFFFFF;            /* 机体白 */
+  --accent: #FCC800;               /* ν高达黄 */
+  --accent-glow: rgba(252, 200, 0, 0.3);
+  --accent-secondary: #E60012;     /* 红色点缀 */
+  --psycho-green: #10B981;
+  --psycho-glow: rgba(16, 185, 129, 0.2);
+  --background: #F5F7FA;           /* 白色背景 */
+  --background-gradient: linear-gradient(135deg, #FFFFFF 0%, #F0F4F8 50%, #E8ECF0 100%);
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+  --surface-hover: #E8F0F8;
+  --surface-active: #D8E4F0;
+  --text-primary: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --text-muted: #8A8A8A;
+  --border: #D0D0D0;
+  --border-accent: #1A1A1A;
+  --border-light: rgba(26, 26, 26, 0.2);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(252, 200, 0, 0.2);
+  --success: #10B981;
+  --warning: #FCC800;
+  --danger: #E60012;
+  --panel-corner: 16px;
+  --hud-glow: rgba(252, 200, 0, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Share Tech Mono', 'Yu Gothic', monospace;
+  background: var(--background-gradient);
+  color: var(--text-primary);
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COCKPIT HUD GRID LAYOUT
+   ═══════════════════════════════════════════════════════════════ */
+.app {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 72px 1fr;
+  grid-template-columns: 280px 1fr;
+  background: var(--background-gradient);
+  position: relative;
+}
+
+/* Scanline overlay effect */
+.app::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(128, 128, 128, 0.02) 2px,
+    rgba(128, 128, 128, 0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* HUD corner decorations */
+.app::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--border-light);
+  pointer-events: none;
+  z-index: 99;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER - TOP STATUS BAR
+   ═══════════════════════════════════════════════════════════════ */
+.app-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 3px solid var(--primary);
+  position: relative;
+}
+
+/* Header top accent line */
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--accent-secondary), var(--primary));
+}
+
+/* Header corner brackets */
+.app-header::after {
+  content: '[ SYSTEM STATUS ]';
+  position: absolute;
+  bottom: 4px;
+  right: 24px;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--accent);
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  border: 2px solid var(--accent);
+  position: relative;
+  clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+}
+
+.brand-icon::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--primary-light);
+  clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+}
+
+.brand-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand-title h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--text-primary);
+  text-shadow: 0 0 10px var(--hud-glow);
+}
+
+.theme-name {
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN CONTENT AREA
+   ═══════════════════════════════════════════════════════════════ */
+.app-main {
+  display: contents;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes panel-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: var(--shadow);
+  }
+  50% {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes psycho-flicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* RX-78-2 元祖高达主题 - 经典蓝 */
+[data-theme="rx78"] .brand-icon {
+  background: linear-gradient(135deg, #003D7A, #0055A4);
+}
+
+/* RX-178 深蓝主题特殊效果 */
+[data-theme="rx178"] .brand-icon {
+  background: linear-gradient(135deg, #0D1F35, #1E3A5F);
+}
+
+/* RX-93 psycho-frame effect - 黄色精神感应光晕 */
+[data-theme="rx93"] .brand-icon {
+  animation: psycho-flicker 2s ease-in-out infinite;
+  background: linear-gradient(135deg, #0D0D0D, #1A1A1A);
+}
+
+[data-theme="rx93"] .brand-icon::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: var(--psycho-glow);
+  filter: blur(8px);
+  z-index: -1;
+}

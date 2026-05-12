@@ -1,0 +1,414 @@
+/* ═══════════════════════════════════════════════════════════════
+   TODO LIST - MAIN HUD DISPLAY AREA
+   ═══════════════════════════════════════════════════════════════ */
+.todo-list {
+  grid-row: 2;
+  grid-column: 2;
+  height: calc(100vh - 72px);
+  display: flex;
+  flex-direction: column;
+  background: var(--background-gradient);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Right side armor border */
+.todo-list::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--border-accent);
+}
+
+/* HUD grid lines overlay */
+.todo-list::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-light) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.todo-list.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-muted);
+  position: relative;
+  z-index: 1;
+}
+
+.empty-icon {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 64px;
+  color: var(--primary);
+  margin-bottom: 20px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TODO HEADER - MISSION BRIEFING BAR
+   ═══════════════════════════════════════════════════════════════ */
+.todo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: var(--surface);
+  border-bottom: 3px solid var(--primary);
+  position: relative;
+  z-index: 5;
+}
+
+/* Header accent gradient */
+.todo-header::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent-secondary), var(--primary));
+}
+
+/* Technical label */
+.todo-header::after {
+  content: '[ MISSION LOG ]';
+  position: absolute;
+  top: 4px;
+  left: 32px;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.todo-header h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--primary-light);
+  margin-top: 8px;
+}
+
+.add-btn {
+  padding: 10px 20px;
+  background: var(--primary);
+  border: none;
+  color: var(--secondary);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+  clip-path: polygon(10% 0, 100% 0, 100% 85%, 90% 100%, 0 100%, 0 10%);
+}
+
+.add-btn:hover {
+  background: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CREATE FORM - INPUT MODULE
+   ═══════════════════════════════════════════════════════════════ */
+.create-form {
+  padding: 20px 32px;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  position: relative;
+  z-index: 4;
+}
+
+.create-form input {
+  width: 100%;
+  padding: 14px 20px;
+  border: 2px solid var(--primary);
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+
+.create-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--hud-glow), inset 0 0 10px var(--hud-glow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TODO SECTIONS - STATUS GROUPS
+   ═══════════════════════════════════════════════════════════════ */
+.todo-sections {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 32px;
+  position: relative;
+  z-index: 2;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--surface);
+}
+
+.todo-sections::-webkit-scrollbar {
+  width: 8px;
+}
+
+.todo-sections::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+.todo-sections::-webkit-scrollbar-thumb {
+  background: var(--primary-dark);
+  border-radius: 4px;
+}
+
+.todo-section {
+  margin-bottom: 28px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+/* Section corner decoration */
+.section-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.section-header.pending::before {
+  background: var(--primary);
+}
+
+.section-header.in-progress::before {
+  background: var(--warning);
+}
+
+.section-header.completed::before {
+  background: var(--success);
+}
+
+.section-header.pending {
+  color: var(--primary-light);
+}
+
+.section-header.in-progress {
+  color: var(--warning);
+}
+
+.section-header.completed {
+  color: var(--success);
+}
+
+.section-icon {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.count {
+  background: var(--surface-hover);
+  padding: 3px 10px;
+  font-size: 9px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TODO ITEMS - TASK RECORDS
+   ═══════════════════════════════════════════════════════════════ */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  background: var(--surface);
+  margin-bottom: 6px;
+  border: 1px solid var(--border-light);
+  border-left: 5px solid var(--primary);
+  position: relative;
+  transition: all 0.2s ease;
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 94% 100%, 0 100%);
+}
+
+.todo-item:hover {
+  background: var(--surface-hover);
+  transform: translateX(6px);
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.todo-item.completed {
+  border-left-color: var(--success);
+  opacity: 0.65;
+}
+
+.todo-item.in_progress {
+  border-left-color: var(--warning);
+  box-shadow: 0 0 10px rgba(255, 184, 0, 0.2);
+}
+
+.todo-item.priority-high {
+  border-left-width: 6px;
+  border-left-color: var(--danger);
+  background: linear-gradient(90deg, var(--surface) 95%, rgba(255, 61, 61, 0.1) 100%);
+}
+
+.todo-item.priority-low {
+  opacity: 0.75;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS BUTTON - STATE INDICATOR
+   ═══════════════════════════════════════════════════════════════ */
+.status-btn {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border);
+  background: var(--surface-alt);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
+}
+
+.status-btn:hover {
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+  box-shadow: 0 0 15px var(--hud-glow);
+}
+
+.status-btn.completed {
+  background: var(--success);
+  border-color: var(--success);
+  color: var(--secondary);
+  box-shadow: 0 0 10px rgba(0, 212, 106, 0.4);
+}
+
+.status-btn.in_progress {
+  background: var(--warning);
+  border-color: var(--warning);
+  color: var(--secondary);
+  box-shadow: 0 0 10px rgba(255, 184, 0, 0.5);
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TODO TITLE - TASK NAME
+   ═══════════════════════════════════════════════════════════════ */
+.todo-title {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.todo-title:hover {
+  color: var(--primary-light);
+}
+
+.todo-title.done {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.edit-input {
+  flex: 1;
+  padding: 6px 12px;
+  border: 2px solid var(--primary);
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DELETE BUTTON
+   ═══════════════════════════════════════════════════════════════ */
+.delete-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.todo-item:hover .delete-btn {
+  opacity: 0.6;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+  color: var(--danger);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NO TODOS STATE
+   ═══════════════════════════════════════════════════════════════ */
+.no-todos {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 60px 40px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.no-todos::before {
+  content: '— AWAITING INPUT —';
+  display: block;
+  margin-bottom: 16px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
