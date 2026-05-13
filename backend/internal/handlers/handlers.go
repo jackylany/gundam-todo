@@ -75,6 +75,10 @@ func DeleteWorkspace(c *gin.Context) {
 		return
 	}
 
+	// 先删除该工作区下的所有待办事项
+	config.DB.Where("workspace_id = ?", id).Delete(&models.Todo{})
+
+	// 再删除工作区
 	result := config.DB.Delete(&models.Workspace{}, id)
 	if result.RowsAffected == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Workspace not found"})

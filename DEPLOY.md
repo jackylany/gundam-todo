@@ -137,7 +137,97 @@ cd backend
 go build -o gundam-todo-server cmd/server/main.go
 ```
 
-**使用 Nginx 部署**
+---
+
+## 步骤五：服务管理
+
+### macOS (launchd)
+
+创建 `~/Library/LaunchAgents/com.gundam.todo.plist`：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.gundam.todo</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/path/to/backend/gundam-todo-server</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>WorkingDirectory</key>
+    <string>/path/to/backend</string>
+    <key>StandardOutPath</key>
+    <string>/path/to/backend/server.log</string>
+    <key>StandardErrorPath</key>
+    <string>/path/to/backend/server.log</string>
+</dict>
+</plist>
+```
+
+管理命令：
+```bash
+# 加载并启动
+launchctl load ~/Library/LaunchAgents/com.gundam.todo.plist
+
+# 停止
+launchctl unload ~/Library/LaunchAgents/com.gundam.todo.plist
+
+# 重启
+launchctl unload ~/Library/LaunchAgents/com.gundam.todo.plist
+launchctl load ~/Library/LaunchAgents/com.gundam.todo.plist
+
+# 查看状态
+launchctl list | grep gundam
+```
+
+### Linux (systemd)
+
+创建 `/etc/systemd/system/gundam-todo.service`：
+
+```ini
+[Unit]
+Description=Gundam Todo Backend Server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/path/to/backend
+ExecStart=/path/to/backend/gundam-todo-server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+管理命令：
+```bash
+# 启动
+sudo systemctl start gundam-todo
+
+# 停止
+sudo systemctl stop gundam-todo
+
+# 重启
+sudo systemctl restart gundam-todo
+
+# 查看状态
+sudo systemctl status gundam-todo
+
+# 开机自启
+sudo systemctl enable gundam-todo
+```
+
+---
+
+## 步骤六：Nginx 反向代理
 
 ```nginx
 server {
@@ -145,19 +235,52 @@ server {
     server_name your-domain.com;
 
     # 前端静态文件
+    root /path/to/frontend/dist;
+    index index.html;
+
     location / {
-        root /path/to/gundam-todo/frontend/dist;
         try_files $uri $uri/ /index.html;
     }
 
-    # 后端 API
+    # 后端 API 代理
     location /api {
         proxy_pass http://127.0.0.1:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # 静态资源缓存
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+        expires 7d;
+        add_header Cache-Control "public, immutable";
     }
 }
 ```
+
+重载 nginx：
+```bash
+nginx -t && nginx -s reload
+```
+
+---
+
+## 步骤七：后端 CORS 配置
+
+如需支持新域名，编辑 `backend/cmd/server/main.go` 的 CORS 配置：
+
+```go
+r.Use(cors.New(cors.Config{
+    AllowOrigins: []string{
+        "http://localhost:5173",
+        "http://your-domain.com",
+    },
+    // ...
+}))
+```
+
+重新编译后端并重启服务即可。
 
 ---
 

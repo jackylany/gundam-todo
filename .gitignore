@@ -5,6 +5,10 @@ backend/go.sum
 # Build outputs
 frontend/dist/
 backend/backend
+backend/gundam-todo-server
+
+# Local deploy configs (本地部署配置，不提交)
+deploy/
 
 # IDE
 .idea/
