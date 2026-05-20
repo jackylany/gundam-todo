@@ -48,6 +48,8 @@ func main() {
 		// Todos
 		api.GET("/todos", handlers.GetTodos)
 		api.POST("/todos", handlers.CreateTodo)
+		api.POST("/todos/sub", handlers.CreateSubTodo)
+		api.GET("/todos/:parent_id/subtodos", handlers.GetSubTodos)
 		api.PUT("/todos/:id", handlers.UpdateTodo)
 		api.PATCH("/todos/:id/status", handlers.UpdateTodoStatus)
 		api.DELETE("/todos/:id", handlers.DeleteTodo)

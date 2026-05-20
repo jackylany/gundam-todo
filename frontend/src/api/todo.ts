@@ -12,6 +12,7 @@ export interface Workspace {
 export interface Todo {
   id: number;
   workspace_id: number;
+  parent_id: number | null;
   title: string;
   description: string;
   status: 'pending' | 'in_progress' | 'completed';
@@ -64,10 +65,13 @@ export const workspacesApi = {
 export const todosApi = {
   getAll: (workspaceId?: number) => {
     const url = workspaceId
-      ? `${API_BASE}/todos?workspace_id=${workspaceId}`
-      : `${API_BASE}/todos`;
+      ? `${API_BASE}/todos?workspace_id=${workspaceId}&parent_id=null`
+      : `${API_BASE}/todos?parent_id=null`;
     return request<Todo[]>(url);
   },
+
+  getSubTodos: (parentId: number) =>
+    request<Todo[]>(`${API_BASE}/todos/${parentId}/subtodos`),
 
   create: (data: {
     workspace_id: number;
@@ -78,6 +82,19 @@ export const todosApi = {
     due_date?: string;
   }) =>
     request<Todo>(`${API_BASE}/todos`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  createSubTodo: (data: {
+    parent_id: number;
+    title: string;
+    description?: string;
+    status?: 'pending' | 'in_progress' | 'completed';
+    priority?: 'low' | 'medium' | 'high';
+    due_date?: string;
+  }) =>
+    request<Todo>(`${API_BASE}/todos/sub`, {
       method: 'POST',
       body: JSON.stringify(data),
     }),

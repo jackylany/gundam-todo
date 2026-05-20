@@ -35,6 +35,7 @@ const (
 type Todo struct {
 	ID          uint         `json:"id" gorm:"primaryKey"`
 	WorkspaceID uint         `json:"workspace_id" gorm:"not null;index"`
+	ParentID    *uint        `json:"parent_id" gorm:"index"`
 	Title       string       `json:"title" gorm:"size:255;not null"`
 	Description string       `json:"description" gorm:"type:text"`
 	Status      TodoStatus   `json:"status" gorm:"type:enum('pending','in_progress','completed');default:'pending'"`
@@ -76,4 +77,13 @@ type UpdateTodoInput struct {
 
 type UpdateTodoStatusInput struct {
 	Status TodoStatus `json:"status" binding:"required"`
+}
+
+type CreateSubTodoInput struct {
+	ParentID    uint         `json:"parent_id" binding:"required"`
+	Title       string       `json:"title" binding:"required"`
+	Description string       `json:"description"`
+	Status      TodoStatus   `json:"status"`
+	Priority    TodoPriority `json:"priority"`
+	DueDate     *time.Time   `json:"due_date"`
 }
