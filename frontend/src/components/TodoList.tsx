@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Todo } from '../api/todo';
 import { todosApi } from '../api/todo';
+import { ConfirmDialog } from './ConfirmDialog';
 import './TodoList.css';
 
 type StatusFilter = 'all' | 'pending' | 'in_progress' | 'completed';
@@ -21,6 +22,11 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
   const [subTodos, setSubTodos] = useState<Map<number, Todo[]>>(new Map());
   const [creatingSubTodoFor, setCreatingSubTodoFor] = useState<number | null>(null);
   const [subTodoTitle, setSubTodoTitle] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    isOpen: boolean;
+    todo: Todo | null;
+    subTodoCount: number;
+  }>({ isOpen: false, todo: null, subTodoCount: 0 });
 
   // 加载子待办
   const loadSubTodos = async (parentId: number) => {
@@ -111,7 +117,20 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
     onRefresh();
   };
 
-  const handleDelete = async (todo: Todo) => {
+  const handleDelete = (todo: Todo) => {
+    // 获取子待办数量
+    const subCount = todo.parent_id ? 0 : (subTodos.get(todo.id)?.length || 0);
+    setDeleteConfirm({
+      isOpen: true,
+      todo: todo,
+      subTodoCount: subCount
+    });
+  };
+
+  const handleConfirmDelete = async () => {
+    const todo = deleteConfirm.todo;
+    if (!todo) return;
+
     await todosApi.delete(todo.id);
     // 如果是子待办，刷新父待办的子待办列表
     if (todo.parent_id) {
@@ -128,7 +147,12 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
         return newMap;
       });
     }
+    setDeleteConfirm({ isOpen: false, todo: null, subTodoCount: 0 });
     onRefresh();
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteConfirm({ isOpen: false, todo: null, subTodoCount: 0 });
   };
 
   const handleEdit = async (todo: Todo) => {
@@ -342,6 +366,21 @@ export function TodoList({ workspaceId, todos, onRefresh }: Props) {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        isOpen={deleteConfirm.isOpen}
+        title="DELETE TASK"
+        message={
+          deleteConfirm.subTodoCount > 0
+            ? `确定要删除待办「${deleteConfirm.todo?.title || ''}」吗？此操作将同时删除 ${deleteConfirm.subTodoCount} 个子待办，且无法撤销。`
+            : `确定要删除待办「${deleteConfirm.todo?.title || ''}」吗？此操作无法撤销。`
+        }
+        confirmText="DELETE"
+        cancelText="CANCEL"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        danger={true}
+      />
     </div>
   );
 }
